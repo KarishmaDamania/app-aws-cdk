@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f0faa44adab13e546fb0f321f712726be16f96e4e43c7d3e652f39545ead605.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a930a8d62651e6992cd84f7316aee2c060c34479b53b2e5b743b293b006cc176.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -231,6 +231,12 @@
             "data": "ExportsOutputRefdevVPC524BF54C27F5E3C9"
           }
         ],
+        "/VPC/Exports/Output{\"Ref\":\"devVPCPublicSubnet1Subnet2E5540AB\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefdevVPCPublicSubnet1Subnet2E5540ABA39DCC67"
+          }
+        ],
         "/VPC/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -262,7 +268,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5b9438744f6a847efb4069f606abaf92cedc1b4b14685942c744abdd6b9ee32a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/63a065bf4ffa2c96a20d66527e58e9dc4ed8fa77565e66b5016fc6f62e326b2d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -333,6 +339,12 @@
             "data": "CDKMetadataAvailable"
           }
         ],
+        "/SG/Exports/Output{\"Fn::GetAtt\":[\"bastionsg1FA4DDAF\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
+          }
+        ],
         "/SG/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -347,6 +359,91 @@
         ]
       },
       "displayName": "SG"
+    },
+    "Bastion.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Bastion.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Bastion": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Bastion.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b8e35aed7174d8fbc4d71368656a4b301d5df7e8f5043c257c723254b0536b79.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Bastion.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SG",
+        "VPC",
+        "Bastion.assets"
+      ],
+      "metadata": {
+        "/Bastion/bastion-host/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "bastionhostInstanceRoleB60F07DA"
+          }
+        ],
+        "/Bastion/bastion-host/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "bastionhostInstanceProfile87EC3056"
+          }
+        ],
+        "/Bastion/bastion-host/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "bastionhost5F466975"
+          }
+        ],
+        "/Bastion/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+          }
+        ],
+        "/Bastion/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Bastion/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Bastion/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Bastion/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Bastion"
     }
   }
 }

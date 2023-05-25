@@ -1,55 +1,6 @@
 {
   "Resources": {
-    "lambdasg77597EA8": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "SG for Lambda Functions",
-        "GroupName": "lambda-sg",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "VpcId": {
-          "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "SG/lambdasg/Resource"
-      }
-    },
-    "bastionsg1FA4DDAF": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "SG for Bastion Host",
-        "GroupName": "bastion-sg",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1"
-          }
-        ],
-        "SecurityGroupIngress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "SSH Access",
-            "FromPort": 22,
-            "IpProtocol": "tcp",
-            "ToPort": 22
-          }
-        ],
-        "VpcId": {
-          "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "SG/bastionsg/Resource"
-      }
-    },
-    "lambdarole0D0C6BDF": {
+    "bastionhostInstanceRoleB60F07DA": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -58,113 +9,110 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": "lambda.amazonaws.com"
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ec2.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
               }
             }
           ],
           "Version": "2012-10-17"
         },
-        "ManagedPolicyArns": [
+        "Tags": [
           {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-              ]
-            ]
-          }
-        ],
-        "RoleName": "lambda-role"
-      },
-      "Metadata": {
-        "aws:cdk:path": "SG/lambdarole/Resource"
-      }
-    },
-    "lambdaroleDefaultPolicy75A97119": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:*",
-                "rds:*"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "lambdaroleDefaultPolicy75A97119",
-        "Roles": [
-          {
-            "Ref": "lambdarole0D0C6BDF"
+            "Key": "Name",
+            "Value": "Bastion/bastion-host"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "SG/lambdarole/DefaultPolicy/Resource"
+        "aws:cdk:path": "Bastion/bastion-host/InstanceRole/Resource"
       }
     },
-    "lambdasgparam78E668E0": {
-      "Type": "AWS::SSM::Parameter",
+    "bastionhostInstanceProfile87EC3056": {
+      "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
-        "Type": "String",
-        "Value": {
-          "Fn::GetAtt": [
-            "lambdasg77597EA8",
-            "GroupId"
+        "Roles": [
+          {
+            "Ref": "bastionhostInstanceRoleB60F07DA"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Bastion/bastion-host/InstanceProfile"
+      }
+    },
+    "bastionhost5F466975": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
           ]
         },
-        "Name": "/dev/lambda-sg"
-      },
-      "Metadata": {
-        "aws:cdk:path": "SG/lambdasg-param/Resource"
-      }
-    },
-    "lambdaroleparamE5F57EAE": {
-      "Type": "AWS::SSM::Parameter",
-      "Properties": {
-        "Type": "String",
-        "Value": {
-          "Fn::GetAtt": [
-            "lambdarole0D0C6BDF",
-            "Arn"
-          ]
+        "IamInstanceProfile": {
+          "Ref": "bastionhostInstanceProfile87EC3056"
         },
-        "Name": "/dev/lambda-role-arn"
-      },
-      "Metadata": {
-        "aws:cdk:path": "SG/lambdarole-param/Resource"
-      }
-    },
-    "lambdaroleparamnameE54D3BDD": {
-      "Type": "AWS::SSM::Parameter",
-      "Properties": {
-        "Type": "String",
-        "Value": {
-          "Ref": "lambdarole0D0C6BDF"
+        "ImageId": {
+          "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
         },
-        "Name": "/dev/lambda-role-name"
+        "InstanceType": "t2.micro",
+        "KeyName": "kari-mac",
+        "SecurityGroupIds": [
+          {
+            "Fn::ImportValue": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
+          }
+        ],
+        "SubnetId": {
+          "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCPublicSubnet1Subnet2E5540ABA39DCC67"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Bastion/bastion-host"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": "#!/bin/bash"
+        }
       },
+      "DependsOn": [
+        "bastionhostInstanceRoleB60F07DA"
+      ],
       "Metadata": {
-        "aws:cdk:path": "SG/lambdarole-param-name/Resource"
+        "aws:cdk:path": "Bastion/bastion-host/Resource"
       }
     },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WMwQ6CMBBEv4V7WQW8eObgleAHmFpWXaFds21jCOm/CzUePM28mczUUB1gX+i3L80wlhNdYTkHbUa1RpcFTb0ymigU5pNwfKn25v6CpEhbWHqecOuydjyRmTf8uqS8t9uxkLt3WrTFgJL7H6SU1+g5islPLbuBArFLqpvDg92ugSNUTfH0RKVEF8gi9F/9AMY1NmzIAAAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/02MywrDIBBFvyV7nTZJN11n1Z2YDyjWTOg0ZgQ1lCL+ex9B6OoczoXbQXuCY2OeUdppkY5ukMdk7CI+6ZrRdpAvHJNhi2KYuXoRZFbI2rtfrqyzCn4mh6V8ozLBrJgwCI3Rb2F/+vfB80SJPBehXunu+dDDGdq+eUQiGTZOtCLonW8wHzLDswAAAA=="
       },
       "Metadata": {
-        "aws:cdk:path": "SG/CDKMetadata/Default"
+        "aws:cdk:path": "Bastion/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Parameters": {
+    "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+    },
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Conditions": {
@@ -359,26 +307,6 @@
           ]
         }
       ]
-    }
-  },
-  "Outputs": {
-    "ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D": {
-      "Value": {
-        "Fn::GetAtt": [
-          "bastionsg1FA4DDAF",
-          "GroupId"
-        ]
-      },
-      "Export": {
-        "Name": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
-      }
-    }
-  },
-  "Parameters": {
-    "BootstrapVersion": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
-      "Default": "/cdk-bootstrap/hnb659fds/version",
-      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
     }
   },
   "Rules": {

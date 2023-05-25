@@ -785,6 +785,14 @@
       "Export": {
         "Name": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
       }
+    },
+    "ExportsOutputRefdevVPCPublicSubnet1Subnet2E5540ABA39DCC67": {
+      "Value": {
+        "Ref": "devVPCPublicSubnet1Subnet2E5540AB"
+      },
+      "Export": {
+        "Name": "VPC:ExportsOutputRefdevVPCPublicSubnet1Subnet2E5540ABA39DCC67"
+      }
     }
   },
   "Parameters": {
