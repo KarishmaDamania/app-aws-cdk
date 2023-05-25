@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a1f23b7b513b68619cfb751c14ef1bea251925a1e2bcb6cdb0a1e67d5974bf0c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f0faa44adab13e546fb0f321f712726be16f96e4e43c7d3e652f39545ead605.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -225,6 +225,12 @@
             "data": "CDKMetadataAvailable"
           }
         ],
+        "/VPC/Exports/Output{\"Ref\":\"devVPC524BF54C\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefdevVPC524BF54C27F5E3C9"
+          }
+        ],
         "/VPC/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -239,6 +245,108 @@
         ]
       },
       "displayName": "VPC"
+    },
+    "SG.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SG.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SG": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SG.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5b9438744f6a847efb4069f606abaf92cedc1b4b14685942c744abdd6b9ee32a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SG.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VPC",
+        "SG.assets"
+      ],
+      "metadata": {
+        "/SG/lambdasg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdasg77597EA8"
+          }
+        ],
+        "/SG/bastionsg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "bastionsg1FA4DDAF"
+          }
+        ],
+        "/SG/lambdarole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdarole0D0C6BDF"
+          }
+        ],
+        "/SG/lambdarole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaroleDefaultPolicy75A97119"
+          }
+        ],
+        "/SG/lambdasg-param/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdasgparam78E668E0"
+          }
+        ],
+        "/SG/lambdarole-param/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaroleparamE5F57EAE"
+          }
+        ],
+        "/SG/lambdarole-param-name/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaroleparamnameE54D3BDD"
+          }
+        ],
+        "/SG/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SG/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SG/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SG/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SG"
     }
   }
 }

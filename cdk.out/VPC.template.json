@@ -575,7 +575,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QT2/CMAzFP8vuaWDAgSuqponLFBXEFbnBDI/WQYkDQlW/Own/upN/fnq2nzzRnzM9/oBLKOzuWDRU624lYI8qSdsO7UR3m5NV5Z43plQm1g3ZVawZJWsDVS4KrqFucNAHbRGCswRCjt/mDF9Lk8sPyDcIXuCqjKdzwmHxkgV94pfhkeTZLSRlPbTI0qsQ2pzdE/8a8NBimsvud9P3qsLgorf32/+5dLyjnK5X5ioHx6Opnqe//AWiwkcWalFXj3oDv23x9DMBAAA="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/02OS4/CMAyEfwv3NCyPC0dUoRWXVVQQV+QGsxhaZ5U4IFT1v2+yPLqn+Twa2zPVk7n+GMEtFPZwKRqqdbcRsBeVrH2Hdqq73Y9V5ZF3plQm1g3ZTawZJXsDVS4KbqFucPAHbxmCswRCjt/hDKu1yfIF8gmCN7gr4+macDi8ZkGf+BV4NHlOS0ldTy2y9CqENnf3xN8GPLSY9nL6PfS9qjC46O3f7/9cOj5Qbtcrc5eT4/FML/RkNjoHosJHFmpRVw/9BWZI2Dc0AQAA"
       },
       "Metadata": {
         "aws:cdk:path": "VPC/CDKMetadata/Default"
@@ -775,6 +775,16 @@
           ]
         }
       ]
+    }
+  },
+  "Outputs": {
+    "ExportsOutputRefdevVPC524BF54C27F5E3C9": {
+      "Value": {
+        "Ref": "devVPC524BF54C"
+      },
+      "Export": {
+        "Name": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+      }
     }
   },
   "Parameters": {

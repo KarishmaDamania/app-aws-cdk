@@ -890,6 +890,321 @@
               "fqn": "constructs.Construct",
               "version": "10.2.32"
             }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "VPC/Exports",
+            "children": {
+              "Output{\"Ref\":\"devVPC524BF54C\"}": {
+                "id": "Output{\"Ref\":\"devVPC524BF54C\"}",
+                "path": "VPC/Exports/Output{\"Ref\":\"devVPC524BF54C\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.14.0"
+        }
+      },
+      "SG": {
+        "id": "SG",
+        "path": "SG",
+        "children": {
+          "lambdasg": {
+            "id": "lambdasg",
+            "path": "SG/lambdasg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/lambdasg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SG for Lambda Functions",
+                    "groupName": "lambda-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.14.0"
+            }
+          },
+          "bastionsg": {
+            "id": "bastionsg",
+            "path": "SG/bastionsg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/bastionsg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SG for Bastion Host",
+                    "groupName": "bastion-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 22,
+                        "toPort": 22,
+                        "description": "SSH Access"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.14.0"
+            }
+          },
+          "lambdarole": {
+            "id": "lambdarole",
+            "path": "SG/lambdarole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/lambdarole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                          ]
+                        ]
+                      }
+                    ],
+                    "roleName": "lambda-role"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.14.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "SG/lambdarole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SG/lambdarole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:*",
+                                "rds:*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "lambdaroleDefaultPolicy75A97119",
+                        "roles": [
+                          {
+                            "Ref": "lambdarole0D0C6BDF"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.14.0"
+            }
+          },
+          "lambdasg-param": {
+            "id": "lambdasg-param",
+            "path": "SG/lambdasg-param",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/lambdasg-param/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Fn::GetAtt": [
+                        "lambdasg77597EA8",
+                        "GroupId"
+                      ]
+                    },
+                    "name": "/dev/lambda-sg"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "lambdarole-param": {
+            "id": "lambdarole-param",
+            "path": "SG/lambdarole-param",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/lambdarole-param/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Fn::GetAtt": [
+                        "lambdarole0D0C6BDF",
+                        "Arn"
+                      ]
+                    },
+                    "name": "/dev/lambda-role-arn"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "lambdarole-param-name": {
+            "id": "lambdarole-param-name",
+            "path": "SG/lambdarole-param-name",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/lambdarole-param-name/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "lambdarole0D0C6BDF"
+                    },
+                    "name": "/dev/lambda-role-name"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "SG/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "SG/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.14.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "SG/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
           }
         },
         "constructInfo": {
