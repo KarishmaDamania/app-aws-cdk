@@ -25,3 +25,7 @@ class KMSStack(Stack):
         self.kms_rds.add_alias(
             alias_name='alias/{}-key-rds'.format(proj_name)
         )
+
+        ssm.StringParameter(self, 'rds-key-param',
+                            string_value=self.kms_rds.key_id,
+                            parameter_name="/"+env_name+"/rds-kms-key")

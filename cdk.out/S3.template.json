@@ -1,80 +1,62 @@
 {
   "Resources": {
-    "rdskey077EA73A": {
-      "Type": "AWS::KMS::Key",
+    "lambdabucket58768DEB": {
+      "Type": "AWS::S3::Bucket",
       "Properties": {
-        "KeyPolicy": {
-          "Statement": [
+        "AccessControl": "BucketOwnerFullControl",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
             {
-              "Action": "kms:*",
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              },
-              "Resource": "*"
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
             }
-          ],
-          "Version": "2012-10-17"
+          ]
         },
-        "Description": "serverless-key-rds ",
-        "EnableKeyRotation": true
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::AccountId"
+              },
+              "-dev-lambda-deploy-packages"
+            ]
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain",
       "Metadata": {
-        "aws:cdk:path": "KMS/rdskey/Resource"
+        "aws:cdk:path": "S3/lambda-bucket/Resource"
       }
     },
-    "rdskeyAlias1A66917D": {
-      "Type": "AWS::KMS::Alias",
-      "Properties": {
-        "AliasName": "alias/serverless-key-rds",
-        "TargetKeyId": {
-          "Fn::GetAtt": [
-            "rdskey077EA73A",
-            "Arn"
-          ]
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "KMS/rdskey/Alias/Resource"
-      }
-    },
-    "rdskeyparam772B455A": {
+    "ssmlambdabucketEFA1411F": {
       "Type": "AWS::SSM::Parameter",
       "Properties": {
         "Type": "String",
         "Value": {
-          "Ref": "rdskey077EA73A"
+          "Ref": "lambdabucket58768DEB"
         },
-        "Name": "/dev/rds-kms-key"
+        "Name": "/dev/lambda-s3-bucket"
       },
       "Metadata": {
-        "aws:cdk:path": "KMS/rds-key-param/Resource"
+        "aws:cdk:path": "S3/ssm-lambda-bucket/Resource"
       }
     },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2KwQ7CIBBEv6V3WK314tH06KWpH2CQrrpSloSlMQ3h3xVNPM17M7ODdg/bxrxE28npma6Qz8lYpz7VJTsvkE+4qv7GNY4zGanyhaJEfP1H4vtgovGYMNb5L6VUHVHCEi1W7gNPlChwUcOaHoE3HRyg7ZqnEOm4cCKPMP7yDYWjHJefAAAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2KQQ7CIBBFz9I9Ha24cWsv0LQHMEhHHZEhYSDGEO6upImr/97//wDDEfadeUtvV9e/6AplScY69asuRTSUc7YOkxpvvFFVIr69IvF9MtF4TBjb/pdam84oIUeLjcfAKyUKXNX0SY/AOw0nGHT3FKI+Zk7kEeYtv9jcVSuVAAAA"
       },
       "Metadata": {
-        "aws:cdk:path": "KMS/CDKMetadata/Default"
+        "aws:cdk:path": "S3/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
     }
