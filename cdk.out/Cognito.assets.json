@@ -1,15 +1,15 @@
 {
   "version": "16.0.0",
   "files": {
-    "1560bb1d4e9bf73e067ade370546242b603d36fca7f7c1e9c30983bbf5c397a2": {
+    "56929e46003976db060080c99111b287ba86a5802b629b34ca2db7797b19f435": {
       "source": {
-        "path": "Redis.template.json",
+        "path": "Cognito.template.json",
         "packaging": "file"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "1560bb1d4e9bf73e067ade370546242b603d36fca7f7c1e9c30983bbf5c397a2.json",
+          "objectKey": "56929e46003976db060080c99111b287ba86a5802b629b34ca2db7797b19f435.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

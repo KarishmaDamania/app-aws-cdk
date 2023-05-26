@@ -1,85 +1,118 @@
 {
   "Resources": {
-    "redissubnetgroup": {
-      "Type": "AWS::ElastiCache::SubnetGroup",
+    "cognitouserpool": {
+      "Type": "AWS::Cognito::UserPool",
       "Properties": {
-        "Description": "Subnet Group For Redis",
-        "SubnetIds": [
-          {
-            "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCPrivateSubnet1Subnet712E02178AFD203D"
-          },
-          {
-            "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCPrivateSubnet2SubnetAA0D521D667E9B43"
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 10,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": false,
+            "RequireUppercase": true
           }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "Redis/redis-subnet-group"
-      }
-    },
-    "redis": {
-      "Type": "AWS::ElastiCache::CacheCluster",
-      "Properties": {
-        "CacheNodeType": "cache.t2.small",
-        "Engine": "redis",
-        "NumCacheNodes": 1,
-        "AutoMinorVersionUpgrade": true,
-        "CacheSubnetGroupName": {
-          "Ref": "redissubnetgroup"
         },
-        "ClusterName": "serverless-redisdev",
-        "VpcSecurityGroupIds": [
+        "Schema": [
           {
-            "Fn::ImportValue": "redis-sg-export"
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "Param1"
           }
-        ]
+        ],
+        "UsernameAttributes": [
+          "email",
+          "phone_number"
+        ],
+        "UserPoolName": "serverless-user-pool"
       },
-      "DependsOn": [
-        "redissubnetgroup"
-      ],
       "Metadata": {
-        "aws:cdk:path": "Redis/redis"
+        "aws:cdk:path": "Cognito/cognitouserpool"
       }
     },
-    "redisendpointA956750C": {
+    "poolclient": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "cognitouserpool"
+        },
+        "ClientName": "dev-app-client"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Cognito/pool-client"
+      }
+    },
+    "identitypool": {
+      "Type": "AWS::Cognito::IdentityPool",
+      "Properties": {
+        "AllowUnauthenticatedIdentities": false,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": {
+              "Ref": "poolclient"
+            },
+            "ProviderName": {
+              "Fn::GetAtt": [
+                "cognitouserpool",
+                "ProviderName"
+              ]
+            }
+          }
+        ],
+        "IdentityPoolName": "serverless-identity-pool"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Cognito/identitypool"
+      }
+    },
+    "appclientidD352B2E1": {
       "Type": "AWS::SSM::Parameter",
       "Properties": {
         "Type": "String",
         "Value": {
-          "Fn::GetAtt": [
-            "redis",
-            "RedisEndpoint.Address"
-          ]
+          "Ref": "poolclient"
         },
-        "Name": "/dev/redis-endpoint"
+        "Name": "/dev/cognito-app-client-id"
       },
       "Metadata": {
-        "aws:cdk:path": "Redis/redis-endpoint/Resource"
+        "aws:cdk:path": "Cognito/app-client-id/Resource"
       }
     },
-    "redisport99C2A578": {
+    "userpoolid2CA4310D": {
       "Type": "AWS::SSM::Parameter",
       "Properties": {
         "Type": "String",
         "Value": {
-          "Fn::GetAtt": [
-            "redis",
-            "RedisEndpoint.Port"
-          ]
+          "Ref": "cognitouserpool"
         },
-        "Name": "/dev/redis-port"
+        "Name": "/dev/cognito-user-pool-id"
       },
       "Metadata": {
-        "aws:cdk:path": "Redis/redis-port/Resource"
+        "aws:cdk:path": "Cognito/user-pool-id/Resource"
+      }
+    },
+    "identitypoolid3EF1D2E9": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Value": {
+          "Ref": "identitypool"
+        },
+        "Name": "/dev/cognitp-identity-pool-id"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Cognito/identity-pool-id/Resource"
       }
     },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2Myw6CMBBFv4V9GR+4cc3CLYEPMKWMMgJT05nGGNJ/l2ri6ubc1xEOJ9gX9iWlG6Zyph7WTq2bzGZdV5ytKDnrRoS1vnEXe0a9BB+fZsM6B/UcRTEkI7LkcSC+NzbYBTc3t/6QUsYWxcfg8HvgeSAlz8k0bx097yo4w6EqHkJUhshKC0L70w8HACx9rAAAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/02MwQ6CMBBEv4V7WUW8eObkjWA8m1pWXIHdpF1iSNN/l8bEeJo3L5M5QHWEfWHfoXT9WE50h3hR60azqVt0MjCpQGwefA3oW5HJ/HEzEbJmc+43IF2zTSaEOf944qG13s6o6PPqV1LKtcMgi3eYuRHuSUk4mXbVp/CuhhNUdfEKRKVftvcZofvmBwP2IBa3AAAA"
       },
       "Metadata": {
-        "aws:cdk:path": "Redis/CDKMetadata/Default"
+        "aws:cdk:path": "Cognito/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
     }

@@ -2209,6 +2209,68 @@
               "version": "2.14.0"
             }
           },
+          "redis-endpoint": {
+            "id": "redis-endpoint",
+            "path": "Redis/redis-endpoint",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Redis/redis-endpoint/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Fn::GetAtt": [
+                        "redis",
+                        "RedisEndpoint.Address"
+                      ]
+                    },
+                    "name": "/dev/redis-endpoint"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "redis-port": {
+            "id": "redis-port",
+            "path": "Redis/redis-port",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Redis/redis-port/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Fn::GetAtt": [
+                        "redis",
+                        "RedisEndpoint.Port"
+                      ]
+                    },
+                    "name": "/dev/redis-port"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
           "CDKMetadata": {
             "id": "CDKMetadata",
             "path": "Redis/CDKMetadata",
@@ -2224,6 +2286,208 @@
               "Condition": {
                 "id": "Condition",
                 "path": "Redis/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.14.0"
+        }
+      },
+      "Cognito": {
+        "id": "Cognito",
+        "path": "Cognito",
+        "children": {
+          "cognitouserpool": {
+            "id": "cognitouserpool",
+            "path": "Cognito/cognitouserpool",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::Cognito::UserPool",
+              "aws:cdk:cloudformation:props": {
+                "autoVerifiedAttributes": [
+                  "email"
+                ],
+                "policies": {
+                  "passwordPolicy": {
+                    "minimumLength": 10,
+                    "requireLowercase": true,
+                    "requireNumbers": true,
+                    "requireSymbols": false,
+                    "requireUppercase": true
+                  }
+                },
+                "schema": [
+                  {
+                    "name": "Param1",
+                    "attributeDataType": "String",
+                    "mutable": true
+                  }
+                ],
+                "usernameAttributes": [
+                  "email",
+                  "phone_number"
+                ],
+                "userPoolName": "serverless-user-pool"
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.CfnUserPool",
+              "version": "2.14.0"
+            }
+          },
+          "pool-client": {
+            "id": "pool-client",
+            "path": "Cognito/pool-client",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::Cognito::UserPoolClient",
+              "aws:cdk:cloudformation:props": {
+                "userPoolId": {
+                  "Ref": "cognitouserpool"
+                },
+                "clientName": "dev-app-client"
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.CfnUserPoolClient",
+              "version": "2.14.0"
+            }
+          },
+          "identitypool": {
+            "id": "identitypool",
+            "path": "Cognito/identitypool",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::Cognito::IdentityPool",
+              "aws:cdk:cloudformation:props": {
+                "allowUnauthenticatedIdentities": false,
+                "cognitoIdentityProviders": [
+                  {
+                    "clientId": {
+                      "Ref": "poolclient"
+                    },
+                    "providerName": {
+                      "Fn::GetAtt": [
+                        "cognitouserpool",
+                        "ProviderName"
+                      ]
+                    }
+                  }
+                ],
+                "identityPoolName": "serverless-identity-pool"
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.CfnIdentityPool",
+              "version": "2.14.0"
+            }
+          },
+          "app-client-id": {
+            "id": "app-client-id",
+            "path": "Cognito/app-client-id",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Cognito/app-client-id/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "poolclient"
+                    },
+                    "name": "/dev/cognito-app-client-id"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "user-pool-id": {
+            "id": "user-pool-id",
+            "path": "Cognito/user-pool-id",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Cognito/user-pool-id/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "cognitouserpool"
+                    },
+                    "name": "/dev/cognito-user-pool-id"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "identity-pool-id": {
+            "id": "identity-pool-id",
+            "path": "Cognito/identity-pool-id",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Cognito/identity-pool-id/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "identitypool"
+                    },
+                    "name": "/dev/cognitp-identity-pool-id"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "Cognito/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "Cognito/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.14.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "Cognito/CDKMetadata/Condition",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnCondition",
                   "version": "2.14.0"

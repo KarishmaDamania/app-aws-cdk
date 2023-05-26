@@ -779,7 +779,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/241293037e2779fdd6f0ff0318fb4e9fcb00b4f2a562ee252564c09ed14c9f35.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1560bb1d4e9bf73e067ade370546242b603d36fca7f7c1e9c30983bbf5c397a2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -808,6 +808,18 @@
             "data": "redis"
           }
         ],
+        "/Redis/redis-endpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisendpointA956750C"
+          }
+        ],
+        "/Redis/redis-port/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisport99C2A578"
+          }
+        ],
         "/Redis/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
@@ -834,6 +846,101 @@
         ]
       },
       "displayName": "Redis"
+    },
+    "Cognito.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Cognito.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Cognito": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Cognito.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/56929e46003976db060080c99111b287ba86a5802b629b34ca2db7797b19f435.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Cognito.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "Cognito.assets"
+      ],
+      "metadata": {
+        "/Cognito/cognitouserpool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitouserpool"
+          }
+        ],
+        "/Cognito/pool-client": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "poolclient"
+          }
+        ],
+        "/Cognito/identitypool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "identitypool"
+          }
+        ],
+        "/Cognito/app-client-id/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "appclientidD352B2E1"
+          }
+        ],
+        "/Cognito/user-pool-id/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userpoolid2CA4310D"
+          }
+        ],
+        "/Cognito/identity-pool-id/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "identitypoolid3EF1D2E9"
+          }
+        ],
+        "/Cognito/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Cognito/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Cognito/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Cognito/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Cognito"
     }
   }
 }
