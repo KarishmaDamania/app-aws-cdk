@@ -273,6 +273,19 @@
       ]
     }
   },
+  "Outputs": {
+    "ExportsOutputFnGetAttrdskey077EA73AArn02629906": {
+      "Value": {
+        "Fn::GetAtt": [
+          "rdskey077EA73A",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "KMS:ExportsOutputFnGetAttrdskey077EA73AArn02629906"
+      }
+    }
+  },
   "Parameters": {
     "BootstrapVersion": {
       "Type": "AWS::SSM::Parameter::Value<String>",

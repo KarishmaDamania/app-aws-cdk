@@ -793,6 +793,22 @@
       "Export": {
         "Name": "VPC:ExportsOutputRefdevVPCPublicSubnet1Subnet2E5540ABA39DCC67"
       }
+    },
+    "ExportsOutputRefdevVPCIsolatedSubnet1Subnet1A2735F39EC62CD1": {
+      "Value": {
+        "Ref": "devVPCIsolatedSubnet1Subnet1A2735F3"
+      },
+      "Export": {
+        "Name": "VPC:ExportsOutputRefdevVPCIsolatedSubnet1Subnet1A2735F39EC62CD1"
+      }
+    },
+    "ExportsOutputRefdevVPCIsolatedSubnet2SubnetD2338F17278A6A7F": {
+      "Value": {
+        "Ref": "devVPCIsolatedSubnet2SubnetD2338F17"
+      },
+      "Export": {
+        "Name": "VPC:ExportsOutputRefdevVPCIsolatedSubnet2SubnetD2338F17278A6A7F"
+      }
     }
   },
   "Parameters": {

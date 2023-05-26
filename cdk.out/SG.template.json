@@ -372,6 +372,17 @@
       "Export": {
         "Name": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
       }
+    },
+    "ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40": {
+      "Value": {
+        "Fn::GetAtt": [
+          "lambdasg77597EA8",
+          "GroupId"
+        ]
+      },
+      "Export": {
+        "Name": "SG:ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40"
+      }
     }
   },
   "Parameters": {

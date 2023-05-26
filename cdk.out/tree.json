@@ -910,6 +910,22 @@
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.14.0"
                 }
+              },
+              "Output{\"Ref\":\"devVPCIsolatedSubnet1Subnet1A2735F3\"}": {
+                "id": "Output{\"Ref\":\"devVPCIsolatedSubnet1Subnet1A2735F3\"}",
+                "path": "VPC/Exports/Output{\"Ref\":\"devVPCIsolatedSubnet1Subnet1A2735F3\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
+              },
+              "Output{\"Ref\":\"devVPCIsolatedSubnet2SubnetD2338F17\"}": {
+                "id": "Output{\"Ref\":\"devVPCIsolatedSubnet2SubnetD2338F17\"}",
+                "path": "VPC/Exports/Output{\"Ref\":\"devVPCIsolatedSubnet2SubnetD2338F17\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
               }
             },
             "constructInfo": {
@@ -1221,6 +1237,14 @@
               "Output{\"Fn::GetAtt\":[\"bastionsg1FA4DDAF\",\"GroupId\"]}": {
                 "id": "Output{\"Fn::GetAtt\":[\"bastionsg1FA4DDAF\",\"GroupId\"]}",
                 "path": "SG/Exports/Output{\"Fn::GetAtt\":[\"bastionsg1FA4DDAF\",\"GroupId\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"lambdasg77597EA8\",\"GroupId\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"lambdasg77597EA8\",\"GroupId\"]}",
+                "path": "SG/Exports/Output{\"Fn::GetAtt\":[\"lambdasg77597EA8\",\"GroupId\"]}",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.14.0"
@@ -1555,6 +1579,24 @@
               "fqn": "constructs.Construct",
               "version": "10.2.32"
             }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "KMS/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"rdskey077EA73A\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"rdskey077EA73A\",\"Arn\"]}",
+                "path": "KMS/Exports/Output{\"Fn::GetAtt\":[\"rdskey077EA73A\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
           }
         },
         "constructInfo": {
@@ -1659,6 +1701,357 @@
               "Condition": {
                 "id": "Condition",
                 "path": "S3/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.14.0"
+        }
+      },
+      "RDS": {
+        "id": "RDS",
+        "path": "RDS",
+        "children": {
+          "db-secret": {
+            "id": "db-secret",
+            "path": "RDS/db-secret",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "RDS/db-secret/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SecretsManager::Secret",
+                  "aws:cdk:cloudformation:props": {
+                    "generateSecretString": {
+                      "excludePunctuation": true,
+                      "generateStringKey": "password",
+                      "includeSpace": false,
+                      "passwordLength": 12,
+                      "secretStringTemplate": "{\"username\": \"admin\"}"
+                    },
+                    "name": "dev-rds-secret"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecret",
+                  "version": "2.14.0"
+                }
+              },
+              "Attachment": {
+                "id": "Attachment",
+                "path": "RDS/db-secret/Attachment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "RDS/db-secret/Attachment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SecretsManager::SecretTargetAttachment",
+                      "aws:cdk:cloudformation:props": {
+                        "secretId": {
+                          "Ref": "dbsecretF8F18970"
+                        },
+                        "targetId": {
+                          "Ref": "mysql5168B53F"
+                        },
+                        "targetType": "AWS::RDS::DBCluster"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecretTargetAttachment",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.SecretTargetAttachment",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_secretsmanager.Secret",
+              "version": "2.14.0"
+            }
+          },
+          "mysql": {
+            "id": "mysql",
+            "path": "RDS/mysql",
+            "children": {
+              "Subnets": {
+                "id": "Subnets",
+                "path": "RDS/mysql/Subnets",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "RDS/mysql/Subnets/Default",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::RDS::DBSubnetGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "dbSubnetGroupDescription": "Subnets for mysql database",
+                        "subnetIds": [
+                          {
+                            "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCIsolatedSubnet1Subnet1A2735F39EC62CD1"
+                          },
+                          {
+                            "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCIsolatedSubnet2SubnetD2338F17278A6A7F"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_rds.CfnDBSubnetGroup",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.SubnetGroup",
+                  "version": "2.14.0"
+                }
+              },
+              "SecurityGroup": {
+                "id": "SecurityGroup",
+                "path": "RDS/mysql/SecurityGroup",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "RDS/mysql/SecurityGroup/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "groupDescription": "RDS security group",
+                        "securityGroupEgress": [
+                          {
+                            "cidrIp": "0.0.0.0/0",
+                            "description": "Allow all outbound traffic by default",
+                            "ipProtocol": "-1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "from SGlambdasg805ABD88:{IndirectPort}": {
+                    "id": "from SGlambdasg805ABD88:{IndirectPort}",
+                    "path": "RDS/mysql/SecurityGroup/from SGlambdasg805ABD88:{IndirectPort}",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                      "aws:cdk:cloudformation:props": {
+                        "ipProtocol": "tcp",
+                        "description": "Access from Lambda Functions",
+                        "fromPort": {
+                          "Fn::GetAtt": [
+                            "mysql5168B53F",
+                            "Endpoint.Port"
+                          ]
+                        },
+                        "groupId": {
+                          "Fn::GetAtt": [
+                            "mysqlSecurityGroup65A9C338",
+                            "GroupId"
+                          ]
+                        },
+                        "sourceSecurityGroupId": {
+                          "Fn::ImportValue": "SG:ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40"
+                        },
+                        "toPort": {
+                          "Fn::GetAtt": [
+                            "mysql5168B53F",
+                            "Endpoint.Port"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "from SGbastionsg874BD1F9:{IndirectPort}": {
+                    "id": "from SGbastionsg874BD1F9:{IndirectPort}",
+                    "path": "RDS/mysql/SecurityGroup/from SGbastionsg874BD1F9:{IndirectPort}",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                      "aws:cdk:cloudformation:props": {
+                        "ipProtocol": "tcp",
+                        "description": "Access from Bastion Host",
+                        "fromPort": {
+                          "Fn::GetAtt": [
+                            "mysql5168B53F",
+                            "Endpoint.Port"
+                          ]
+                        },
+                        "groupId": {
+                          "Fn::GetAtt": [
+                            "mysqlSecurityGroup65A9C338",
+                            "GroupId"
+                          ]
+                        },
+                        "sourceSecurityGroupId": {
+                          "Fn::ImportValue": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
+                        },
+                        "toPort": {
+                          "Fn::GetAtt": [
+                            "mysql5168B53F",
+                            "Endpoint.Port"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                  "version": "2.14.0"
+                }
+              },
+              "AuroraMySqlDatabaseClusterEngineDefaultParameterGroup": {
+                "id": "AuroraMySqlDatabaseClusterEngineDefaultParameterGroup",
+                "path": "RDS/mysql/AuroraMySqlDatabaseClusterEngineDefaultParameterGroup",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.14.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "RDS/mysql/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::RDS::DBCluster",
+                  "aws:cdk:cloudformation:props": {
+                    "engine": "aurora-mysql",
+                    "copyTagsToSnapshot": true,
+                    "databaseName": "serverlessdev",
+                    "dbClusterParameterGroupName": "default.aurora-mysql5.7",
+                    "dbSubnetGroupName": {
+                      "Ref": "mysqlSubnets8BA5C110"
+                    },
+                    "kmsKeyId": {
+                      "Fn::ImportValue": "KMS:ExportsOutputFnGetAttrdskey077EA73AArn02629906"
+                    },
+                    "masterUsername": "admin",
+                    "masterUserPassword": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{{resolve:secretsmanager:",
+                          {
+                            "Ref": "dbsecretF8F18970"
+                          },
+                          ":SecretString:password::}}"
+                        ]
+                      ]
+                    },
+                    "storageEncrypted": true,
+                    "vpcSecurityGroupIds": [
+                      {
+                        "Fn::GetAtt": [
+                          "mysqlSecurityGroup65A9C338",
+                          "GroupId"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.CfnDBCluster",
+                  "version": "2.14.0"
+                }
+              },
+              "Instance1": {
+                "id": "Instance1",
+                "path": "RDS/mysql/Instance1",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::RDS::DBInstance",
+                  "aws:cdk:cloudformation:props": {
+                    "dbInstanceClass": "db.t3.medium",
+                    "dbClusterIdentifier": {
+                      "Ref": "mysql5168B53F"
+                    },
+                    "dbSubnetGroupName": {
+                      "Ref": "mysqlSubnets8BA5C110"
+                    },
+                    "engine": "aurora-mysql",
+                    "publiclyAccessible": false
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.CfnDBInstance",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_rds.DatabaseCluster",
+              "version": "2.14.0"
+            }
+          },
+          "db-host": {
+            "id": "db-host",
+            "path": "RDS/db-host",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "RDS/db-host/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Fn::GetAtt": [
+                        "mysql5168B53F",
+                        "Endpoint.Address"
+                      ]
+                    },
+                    "name": "/env_name/db-host"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.14.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "RDS/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "RDS/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.14.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "RDS/CDKMetadata/Condition",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnCondition",
                   "version": "2.14.0"

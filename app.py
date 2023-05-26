@@ -4,6 +4,7 @@ from stacks.security_gp_stack import SecurityGpStack
 from stacks.bastion_host_stack import BastionStack
 from stacks.kms_stack import KMSStack
 from stacks.s3_stack import S3Stack
+from stacks.rds_stack import RDSStack
 
 app = cdk.App()
 
@@ -17,5 +18,8 @@ bastion_stack = BastionStack(
 kms_stack = KMSStack(app, "KMS")
 
 s3_stack = S3Stack(app, "S3")
+
+rds_stack = RDSStack(app, "RDS", vpc=vpc_stack.vpc, lambdasg=security_gp_stack.lambda_sg,
+                     bastionsg=security_gp_stack.bastion_sg, kmskey=kms_stack.kms_rds)
 
 app.synth()
