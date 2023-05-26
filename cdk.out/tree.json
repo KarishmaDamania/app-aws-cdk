@@ -926,6 +926,22 @@
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.14.0"
                 }
+              },
+              "Output{\"Ref\":\"devVPCPrivateSubnet1Subnet712E0217\"}": {
+                "id": "Output{\"Ref\":\"devVPCPrivateSubnet1Subnet712E0217\"}",
+                "path": "VPC/Exports/Output{\"Ref\":\"devVPCPrivateSubnet1Subnet712E0217\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
+              },
+              "Output{\"Ref\":\"devVPCPrivateSubnet2SubnetAA0D521D\"}": {
+                "id": "Output{\"Ref\":\"devVPCPrivateSubnet2SubnetAA0D521D\"}",
+                "path": "VPC/Exports/Output{\"Ref\":\"devVPCPrivateSubnet2SubnetAA0D521D\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.14.0"
+                }
               }
             },
             "constructInfo": {
@@ -1013,6 +1029,70 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.14.0"
+            }
+          },
+          "redissg": {
+            "id": "redissg",
+            "path": "SG/redissg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SG/redissg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SG for Redis Cluster",
+                    "groupName": "redis-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.14.0"
+                }
+              },
+              "from SGlambdasg805ABD88:6379": {
+                "id": "from SGlambdasg805ABD88:6379",
+                "path": "SG/redissg/from SGlambdasg805ABD88:6379",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                  "aws:cdk:cloudformation:props": {
+                    "ipProtocol": "tcp",
+                    "description": "Access from Lambda Functions",
+                    "fromPort": 6379,
+                    "groupId": {
+                      "Fn::GetAtt": [
+                        "redissg9A3AB737",
+                        "GroupId"
+                      ]
+                    },
+                    "sourceSecurityGroupId": {
+                      "Fn::GetAtt": [
+                        "lambdasg77597EA8",
+                        "GroupId"
+                      ]
+                    },
+                    "toPort": 6379
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
                   "version": "2.14.0"
                 }
               }
@@ -1111,6 +1191,14 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.14.0"
+            }
+          },
+          "redis-export": {
+            "id": "redis-export",
+            "path": "SG/redis-export",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
               "version": "2.14.0"
             }
           },
@@ -2052,6 +2140,90 @@
               "Condition": {
                 "id": "Condition",
                 "path": "RDS/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.32"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.14.0"
+        }
+      },
+      "Redis": {
+        "id": "Redis",
+        "path": "Redis",
+        "children": {
+          "redis-subnet-group": {
+            "id": "redis-subnet-group",
+            "path": "Redis/redis-subnet-group",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::ElastiCache::SubnetGroup",
+              "aws:cdk:cloudformation:props": {
+                "description": "Subnet Group For Redis",
+                "subnetIds": [
+                  {
+                    "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCPrivateSubnet1Subnet712E02178AFD203D"
+                  },
+                  {
+                    "Fn::ImportValue": "VPC:ExportsOutputRefdevVPCPrivateSubnet2SubnetAA0D521D667E9B43"
+                  }
+                ]
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticache.CfnSubnetGroup",
+              "version": "2.14.0"
+            }
+          },
+          "redis": {
+            "id": "redis",
+            "path": "Redis/redis",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::ElastiCache::CacheCluster",
+              "aws:cdk:cloudformation:props": {
+                "cacheNodeType": "cache.t2.small",
+                "engine": "redis",
+                "numCacheNodes": 1,
+                "autoMinorVersionUpgrade": true,
+                "cacheSubnetGroupName": {
+                  "Ref": "redissubnetgroup"
+                },
+                "clusterName": "serverless-redisdev",
+                "vpcSecurityGroupIds": [
+                  {
+                    "Fn::ImportValue": "redis-sg-export"
+                  }
+                ]
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticache.CfnCacheCluster",
+              "version": "2.14.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "Redis/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "Redis/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.14.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "Redis/CDKMetadata/Condition",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnCondition",
                   "version": "2.14.0"

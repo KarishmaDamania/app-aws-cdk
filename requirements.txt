@@ -5,5 +5,6 @@ aws-cdk.aws-ec2
 aws-cdk.aws-iam
 aws-cdk.aws-kms
 aws-cdk.aws-rds
+aws-cdk.aws-elasticache
 aws-cdk.aws-secretsmanager
-constructs
+constructs>=10.0.0

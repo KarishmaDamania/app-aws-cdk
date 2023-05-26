@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1a0690a04655b2a58ef8d45c77acd105002ac0ac4233032fdaae2f0587c7cd7d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8883a9a0124ab1c3cdf5ead5b6d3e4c921d12b41c6f72bcd091e129fc7a1dab1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -249,6 +249,18 @@
             "data": "ExportsOutputRefdevVPCIsolatedSubnet2SubnetD2338F17278A6A7F"
           }
         ],
+        "/VPC/Exports/Output{\"Ref\":\"devVPCPrivateSubnet1Subnet712E0217\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefdevVPCPrivateSubnet1Subnet712E02178AFD203D"
+          }
+        ],
+        "/VPC/Exports/Output{\"Ref\":\"devVPCPrivateSubnet2SubnetAA0D521D\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefdevVPCPrivateSubnet2SubnetAA0D521D667E9B43"
+          }
+        ],
         "/VPC/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -280,7 +292,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e3990803c18f3b080e17ac31517c3dcb77068ae6b266a7fd0128032876e213b0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/32f4dc56d7173d7449035333f0bb55ced0ae4afd2ba5c0f661a471c4810f2774.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -309,6 +321,18 @@
             "data": "bastionsg1FA4DDAF"
           }
         ],
+        "/SG/redissg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redissg9A3AB737"
+          }
+        ],
+        "/SG/redissg/from SGlambdasg805ABD88:6379": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redissgfromSGlambdasg805ABD88637943C3C0AA"
+          }
+        ],
         "/SG/lambdarole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -319,6 +343,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdaroleDefaultPolicy75A97119"
+          }
+        ],
+        "/SG/redis-export": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redisexport"
           }
         ],
         "/SG/lambdasg-param/Resource": [
@@ -732,6 +762,78 @@
         ]
       },
       "displayName": "RDS"
+    },
+    "Redis.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Redis.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Redis": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Redis.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/241293037e2779fdd6f0ff0318fb4e9fcb00b4f2a562ee252564c09ed14c9f35.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Redis.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VPC",
+        "Redis.assets"
+      ],
+      "metadata": {
+        "/Redis/redis-subnet-group": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redissubnetgroup"
+          }
+        ],
+        "/Redis/redis": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "redis"
+          }
+        ],
+        "/Redis/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Redis/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Redis/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Redis/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Redis"
     }
   }
 }

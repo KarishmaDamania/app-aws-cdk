@@ -7,6 +7,8 @@ from aws_cdk import (
     aws_ssm as ssm
 )
 
+import aws_cdk as cdk
+
 
 class SecurityGpStack(Stack):
 
@@ -31,6 +33,16 @@ class SecurityGpStack(Stack):
                                             description="SG for Bastion Host",
                                             allow_all_outbound=True
                                             )
+        redis_sg = ec2.SecurityGroup(self,
+                                           "redissg",
+                                           security_group_name='redis-sg',
+                                           vpc=vpc,
+                                           description="SG for Redis Cluster",
+                                           allow_all_outbound=True
+                                           )
+        
+        redis_sg.add_ingress_rule(self.lambda_sg, ec2.Port.tcp(6379), "Access from Lambda Functions")
+
         self.bastion_sg.add_ingress_rule(
             ec2.Peer.any_ipv4(), ec2.Port.tcp(22), "SSH Access")
 
@@ -48,6 +60,11 @@ class SecurityGpStack(Stack):
                 actions=["s3:*", "rds:*"],
                 resources=["*"]
             )
+        )
+
+        cdk.CfnOutput(
+            self, "redis-export", export_name="redis-sg-export",
+            value = redis_sg.security_group_id
         )
 
         # SSM Parameters

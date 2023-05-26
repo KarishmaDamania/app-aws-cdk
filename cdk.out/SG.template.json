@@ -49,6 +49,50 @@
         "aws:cdk:path": "SG/bastionsg/Resource"
       }
     },
+    "redissg9A3AB737": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "SG for Redis Cluster",
+        "GroupName": "redis-sg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Fn::ImportValue": "VPC:ExportsOutputRefdevVPC524BF54C27F5E3C9"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "SG/redissg/Resource"
+      }
+    },
+    "redissgfromSGlambdasg805ABD88637943C3C0AA": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "Access from Lambda Functions",
+        "FromPort": 6379,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "redissg9A3AB737",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "lambdasg77597EA8",
+            "GroupId"
+          ]
+        },
+        "ToPort": 6379
+      },
+      "Metadata": {
+        "aws:cdk:path": "SG/redissg/from SGlambdasg805ABD88:6379"
+      }
+    },
     "lambdarole0D0C6BDF": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -159,12 +203,47 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WMwQ6CMBBEv4V7WQW8eObgleAHmFpWXaFds21jCOm/CzUePM28mczUUB1gX+i3L80wlhNdYTkHbUa1RpcFTb0ymigU5pNwfKn25v6CpEhbWHqecOuydjyRmTf8uqS8t9uxkLt3WrTFgJL7H6SU1+g5islPLbuBArFLqpvDg92ugSNUTfH0RKVEF8gi9F/9AMY1NmzIAAAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/32NwQ6CMBBEv4V7qQJePHswniT4AaaWFVdoS7bbGEL671KIV08zb3YyW8riIPeZ+vhct30+4EPON1a6F0t0n0GXC4MOhDydyYVRnJ72f3CxHYH3UaAycm7cAKmyau0G1FPCzUXhvUkPCW1XK1IGGGi9/yDGhNfAY+B1B7wLpNfNk7MtMjobRT3xy9ldJY+yqLK3R8wpWEYDstn0Cwhtqs7qAAAA"
       },
       "Metadata": {
         "aws:cdk:path": "SG/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Outputs": {
+    "redisexport": {
+      "Value": {
+        "Fn::GetAtt": [
+          "redissg9A3AB737",
+          "GroupId"
+        ]
+      },
+      "Export": {
+        "Name": "redis-sg-export"
+      }
+    },
+    "ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D": {
+      "Value": {
+        "Fn::GetAtt": [
+          "bastionsg1FA4DDAF",
+          "GroupId"
+        ]
+      },
+      "Export": {
+        "Name": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
+      }
+    },
+    "ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40": {
+      "Value": {
+        "Fn::GetAtt": [
+          "lambdasg77597EA8",
+          "GroupId"
+        ]
+      },
+      "Export": {
+        "Name": "SG:ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40"
+      }
     }
   },
   "Conditions": {
@@ -359,30 +438,6 @@
           ]
         }
       ]
-    }
-  },
-  "Outputs": {
-    "ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D": {
-      "Value": {
-        "Fn::GetAtt": [
-          "bastionsg1FA4DDAF",
-          "GroupId"
-        ]
-      },
-      "Export": {
-        "Name": "SG:ExportsOutputFnGetAttbastionsg1FA4DDAFGroupId8A31197D"
-      }
-    },
-    "ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40": {
-      "Value": {
-        "Fn::GetAtt": [
-          "lambdasg77597EA8",
-          "GroupId"
-        ]
-      },
-      "Export": {
-        "Name": "SG:ExportsOutputFnGetAttlambdasg77597EA8GroupIdF08ADB40"
-      }
     }
   },
   "Parameters": {

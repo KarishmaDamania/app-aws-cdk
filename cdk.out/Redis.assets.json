@@ -1,15 +1,15 @@
 {
   "version": "16.0.0",
   "files": {
-    "8883a9a0124ab1c3cdf5ead5b6d3e4c921d12b41c6f72bcd091e129fc7a1dab1": {
+    "241293037e2779fdd6f0ff0318fb4e9fcb00b4f2a562ee252564c09ed14c9f35": {
       "source": {
-        "path": "VPC.template.json",
+        "path": "Redis.template.json",
         "packaging": "file"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8883a9a0124ab1c3cdf5ead5b6d3e4c921d12b41c6f72bcd091e129fc7a1dab1.json",
+          "objectKey": "241293037e2779fdd6f0ff0318fb4e9fcb00b4f2a562ee252564c09ed14c9f35.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
