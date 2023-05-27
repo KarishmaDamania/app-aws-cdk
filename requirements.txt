@@ -8,4 +8,6 @@ aws-cdk.aws-rds
 aws-cdk.aws-elasticache
 aws-cdk.aws-secretsmanager
 aws-cdk.aws-cognito
+aws-cdk.aws-apigateway
+aws-cdk.aws-lambda
 constructs>=10.0.0

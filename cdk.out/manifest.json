@@ -941,6 +941,119 @@
         ]
       },
       "displayName": "Cognito"
+    },
+    "API.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "API.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "API": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "API.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/09faa6aaeb34ae2a5a555d63f68f89b5b7b42f8b4501c564d7c1e0ab5d173b17.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "API.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "API.assets"
+      ],
+      "metadata": {
+        "/API/restapi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiC5611D27"
+          }
+        ],
+        "/API/restapi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiCloudWatchRole9B4F6A99"
+          }
+        ],
+        "/API/restapi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiAccountAAA74549"
+          }
+        ],
+        "/API/restapi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiDeployment4A8950A2e2158856bdd9789657ad6c1773859d00"
+          }
+        ],
+        "/API/restapi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiDeploymentStageprod01FD8F81"
+          }
+        ],
+        "/API/restapi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiEndpoint7C8BD49C"
+          }
+        ],
+        "/API/restapi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "restapiANY457AF35A"
+          }
+        ],
+        "/API/api-gw/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apigw7F882D19"
+          }
+        ],
+        "/API/api-gw-id/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apigwid32D0D0AB"
+          }
+        ],
+        "/API/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/API/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/API/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/API/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "API"
     }
   }
 }
