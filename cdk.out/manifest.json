@@ -1227,6 +1227,131 @@
         ]
       },
       "displayName": "Lambda"
+    },
+    "cp-backend.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cp-backend.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cp-backend": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cp-backend.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8667e33453158c14469ac2af5f9f24ca6cea29c1cc1c71773b8ba5267adc1db5.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cp-backend.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cp-backend.assets"
+      ],
+      "metadata": {
+        "/cp-backend/buildproject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "buildprojectRoleB4D7D8AB"
+          }
+        ],
+        "/cp-backend/buildproject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "buildprojectRoleDefaultPolicyA8DD865E"
+          }
+        ],
+        "/cp-backend/buildproject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "buildproject87EEBE72"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineRole59DF2843"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineRoleDefaultPolicyAF6F9348"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineDB62E984"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Source/GitHubSource/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineSourceGitHubSourceWebhookResourceC780C728"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Deploy/DeployToDev/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineDeployDeployToDevCodePipelineActionRoleC732A20B"
+          }
+        ],
+        "/cp-backend/backend-pipeline/Deploy/DeployToDev/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "backendpipelineDeployDeployToDevCodePipelineActionRoleDefaultPolicy187CE14C"
+          }
+        ],
+        "/cp-backend/accountid/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "accountid2AE3F05F"
+          }
+        ],
+        "/cp-backend/region/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "region0C91FFCE"
+          }
+        ],
+        "/cp-backend/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/cp-backend/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/cp-backend/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cp-backend/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cp-backend"
     }
   }
 }

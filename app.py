@@ -9,6 +9,8 @@ from stacks.redis_stack import RedisStack
 from stacks.cognito_stack import CognitoStack
 from stacks.api_gateway_stack import APIStack
 from stacks.lambda_stack import LambdaStack
+from stacks.code_pipeline_backend_stack import CodePipelineBackendStack
+
 
 app = cdk.App()
 
@@ -33,5 +35,7 @@ cognito_stack = CognitoStack(app, "Cognito")
 api_stack = APIStack(app, "API")
 
 lambda_stack = LambdaStack(app, "Lambda")
+
+cp_backend = CodePipelineBackendStack(app,'cp-backend', artifactbucket=cdk.Fn.import_value('build-artifacts-bucket') )
 
 app.synth()
