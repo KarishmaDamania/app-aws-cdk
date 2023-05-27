@@ -50,15 +50,107 @@
         "aws:cdk:path": "S3/ssm-lambda-bucket/Resource"
       }
     },
+    "buildartifactsD3575A12": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "BucketOwnerFullControl",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::AccountId"
+              },
+              "-dev-build-artifacts"
+            ]
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "S3/build-artifacts/Resource"
+      }
+    },
+    "frontend0151CE44": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "BucketOwnerFullControl",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::AccountId"
+              },
+              "-dev-frontend"
+            ]
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "S3/frontend/Resource"
+      }
+    },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2KQQ7CIBBFz9I9Ha24cWsv0LQHMEhHHZEhYSDGEO6upImr/97//wDDEfadeUtvV9e/6AplScY69asuRTSUc7YOkxpvvFFVIr69IvF9MtF4TBjb/pdam84oIUeLjcfAKyUKXNX0SY/AOw0nGHT3FKI+Zk7kEeYtv9jcVSuVAAAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2LTQ7CIBCFz9I9jFbcuLUHsKkHMEhRRwQMM8QYwt0Vm7h63/vbQL+FdadfJM3s5APPUI6sjRPf6FRIQdln4yyL4RIWqoLIt1XCcB110t6yTa3/m1qbPWR+5t9xshRzMrbxEMOMjDFUMb75FsNKwQ561d0JUaYcGL2FadEPD+Osf58AAAA="
       },
       "Metadata": {
         "aws:cdk:path": "S3/CDKMetadata/Default"
       },
       "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Outputs": {
+    "s3buildartifactsexport": {
+      "Value": {
+        "Ref": "buildartifactsD3575A12"
+      },
+      "Export": {
+        "Name": "build-artifacts-bucket"
+      }
+    },
+    "s3frontendexport": {
+      "Value": {
+        "Ref": "frontend0151CE44"
+      },
+      "Export": {
+        "Name": "frontend-bucket"
+      }
     }
   },
   "Conditions": {

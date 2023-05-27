@@ -1774,6 +1774,122 @@
               "version": "2.14.0"
             }
           },
+          "build-artifacts": {
+            "id": "build-artifacts",
+            "path": "S3/build-artifacts",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "S3/build-artifacts/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "accessControl": "BucketOwnerFullControl",
+                    "bucketEncryption": {
+                      "serverSideEncryptionConfiguration": [
+                        {
+                          "serverSideEncryptionByDefault": {
+                            "sseAlgorithm": "AES256"
+                          }
+                        }
+                      ]
+                    },
+                    "bucketName": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "-dev-build-artifacts"
+                        ]
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.14.0"
+            }
+          },
+          "s3-build-artifacts-export": {
+            "id": "s3-build-artifacts-export",
+            "path": "S3/s3-build-artifacts-export",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.14.0"
+            }
+          },
+          "frontend": {
+            "id": "frontend",
+            "path": "S3/frontend",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "S3/frontend/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "accessControl": "BucketOwnerFullControl",
+                    "bucketEncryption": {
+                      "serverSideEncryptionConfiguration": [
+                        {
+                          "serverSideEncryptionByDefault": {
+                            "sseAlgorithm": "AES256"
+                          }
+                        }
+                      ]
+                    },
+                    "bucketName": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "-dev-frontend"
+                        ]
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.14.0"
+            }
+          },
+          "s3-frontend-export": {
+            "id": "s3-frontend-export",
+            "path": "S3/s3-frontend-export",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.14.0"
+            }
+          },
           "CDKMetadata": {
             "id": "CDKMetadata",
             "path": "S3/CDKMetadata",
@@ -2912,7 +3028,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                       },
-                      "s3Key": "627a643f1859b2b24f8c4bc311922dc32f3dc743501add7a5ffc0ac67c641b38.zip"
+                      "s3Key": "f85732ee90606218f6fbe24206e379874f3f40bc836d947356fa4b08cbed77c8.zip"
                     },
                     "role": {
                       "Fn::GetAtt": [
